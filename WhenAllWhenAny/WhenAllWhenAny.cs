@@ -26,56 +26,86 @@ namespace WhenAllWhenAny
 
         private async void GetMetaDataAsync(string artistName, string albumName)
         {
-            var imdb = GetImdbLabelNameAsync(artistName, albumName);
-            var gracenote = GetGraceNoteLabelNameAsync(artistName, albumName);
-            var freedb = GetFreeDbLabelNameAsync(artistName, albumName);
+            try
+            {
 
-            if (chkFastestWins.Checked)
-            {
-                await
-                Task.WhenAny(imdb, gracenote, freedb);
-            }
-            else
-            {
-                await
-                Task.WhenAll(imdb, gracenote, freedb);
-            }
+                var imdb = GetImdbLabelNameAsync(artistName, albumName);
+                var gracenote = GetGraceNoteLabelNameAsync(artistName, albumName);
+                var freedb = GetFreeDbLabelNameAsync(artistName, albumName);
+                var allTasks = new List<Task<String>> {imdb, gracenote, freedb};
 
-            string results = string.Empty;
-            if (imdb.IsCompleted)
-            {
-                results += "IMDB : " + imdb.Result + "\r\n";
-            }
-            if (gracenote.IsCompleted)
-            {
-                results += "GraceNote : " + gracenote.Result + "\r\n";
-            }
-            if (freedb.IsCompleted)
-            {
-                results += "FreeDb : " + freedb.Result + "\r\n";
-            }
+                if (chkFastestWins.Checked)
+                {                    
+                    while (!allTasks.Any(t => t.IsCompleted && !t.IsFaulted))
+                    {
+                        try
+                        {
+                            await
+                                Task.WhenAny(allTasks.Except(
+                                allTasks.Where(t => t.IsFaulted)));
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        await
+                            Task.WhenAll(allTasks);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
 
-            txtResults.Text += results;
+                var onlySuccessful = allTasks.ToList().Where(t => !t.IsFaulted);
+
+                string results = string.Empty;
+                if ((imdb.IsCompleted) && (!imdb.IsFaulted))
+                {
+                    results += "IMDB : " + imdb.Result + "\r\n";
+                }
+                if ((gracenote.IsCompleted) && (!gracenote.IsFaulted))
+                {
+                    results += "GraceNote : " + gracenote.Result + "\r\n";
+                }
+                if ((freedb.IsCompleted) && (!freedb.IsFaulted))
+                {
+                    results += "FreeDb : " + freedb.Result + "\r\n";
+                }
+
+                txtResults.Text += results;
+            }
+            catch (AggregateException ex)
+            {
+                // WhenAny
+                txtResults.Text += ex.InnerException.Message + "\r\n" + ex.GetType().ToString();
+            }
+            catch (Exception ex)
+            {
+                // WhenAll
+                txtResults.Text += ex.GetType().ToString() + "\r\n" + ex.Message;
+            }
         }
 
         private async Task<string> GetGraceNoteLabelNameAsync(string artist, 
             string albumName)
         {
-            try
-            {
-                // would be some web service somewhere
-                await Task.Delay(500);
-                return "Island Records";
-            }
-            catch (Exception ex)
-            {
-                return "Exception - " + ex.Message + " (" + ex.GetType().ToString() + ")";
-            }
+            await
+            Task.Delay(500);
+            throw new WebException("Gracenote web timeout");
+            return "Island Records";
         }
 
         private async Task<string> GetImdbLabelNameAsync(string artist, 
             string albumName)
         {
+            await
+            Task.Delay(2000);
+            throw new WebException("Gracenote web timeout");
             // would be some web service somewhere
             await Task.Delay(2000);
             return "Island Records";
