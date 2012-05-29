@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PostalCodeLookup;
@@ -56,12 +51,12 @@ namespace PostalCodeClient
 
         private StreetData GetSingleAddress(string postalCode)
         {
-            var wcfClient = new StreetLookupClient();
+            var wcfClient = new StreetLookupClient("BasicHttpBinding_IStreetLookup_Fast");
             return wcfClient.GetStreet(postalCode);
         }
         private async Task<StreetData> GetSingleAddressAsync(string postalCode)
         {
-            var wcfClient = new StreetLookupClient();
+            var wcfClient = new StreetLookupClient("BasicHttpBinding_IStreetLookup_Fast");
             var sd = await wcfClient.GetStreetAsync(postalCode);
             return sd;
         }

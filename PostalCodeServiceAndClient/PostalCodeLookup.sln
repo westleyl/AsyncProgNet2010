@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostalCodeLookup", "PostalC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostalCodeClient", "PostalCodeLookupClient\PostalCodeClient.csproj", "{08E2B527-6559-4E13-9286-67EF67936AAE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostalCodeLookupSlow", "PostalCodeLookupServiceSlow\PostalCodeLookupSlow.csproj", "{4D6FB490-C586-4A73-B446-54681A4831C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{08E2B527-6559-4E13-9286-67EF67936AAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08E2B527-6559-4E13-9286-67EF67936AAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08E2B527-6559-4E13-9286-67EF67936AAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D6FB490-C586-4A73-B446-54681A4831C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D6FB490-C586-4A73-B446-54681A4831C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D6FB490-C586-4A73-B446-54681A4831C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D6FB490-C586-4A73-B446-54681A4831C8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BB52C4D4-9E4C-4818-8E49-6F2BA3DE4DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BB52C4D4-9E4C-4818-8E49-6F2BA3DE4DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB52C4D4-9E4C-4818-8E49-6F2BA3DE4DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU

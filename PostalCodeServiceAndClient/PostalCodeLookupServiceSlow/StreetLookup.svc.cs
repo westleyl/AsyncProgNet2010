@@ -1,5 +1,4 @@
-﻿
-namespace PostalCodeLookup
+﻿namespace PostalCodeLookup
 {
     public class StreetLookup : IStreetLookup
     {
