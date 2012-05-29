@@ -20,12 +20,17 @@ namespace PostalCodeClient
             StreetData[] resultList;
             var beforeCallingWebClient = DateTime.Now;
 
+            string endPointName;
+            endPointName = rFastService.Checked ? 
+                "BasicHttpBinding_IStreetLookup_Fast" : 
+                "BasicHttpBinding_IStreetLookup_Slow";
+
             if (!cUseAsync.Checked)
             {
                 resultList = new StreetData[postalCodeList.Length];
                 for (var i = 0; i < postalCodeList.Length; i++)
                 {
-                    resultList[i] = GetSingleAddress(postalCodeList[i]);
+                    resultList[i] = GetSingleAddress(postalCodeList[i], endPointName);
                 }
             }
             else
@@ -33,9 +38,15 @@ namespace PostalCodeClient
                 var allStreetSearches = new Task<StreetData>[postalCodeList.Length];
                 for (var i = 0; i < postalCodeList.Length; i++)
                 {
-                    allStreetSearches[i] = GetSingleAddressAsync(postalCodeList[i]);
+                    allStreetSearches[i] = GetSingleAddressAsync(postalCodeList[i], endPointName);
                 }
-                resultList = await Task.WhenAll(allStreetSearches);
+                if (rWhenAll.Checked)
+                    resultList = await Task.WhenAll(allStreetSearches);
+                else
+                {
+                    var singleResult = await Task.WhenAny(allStreetSearches);
+                    resultList = new StreetData[1] {singleResult.Result};
+                }
             }
             tProgress.Text = String.Format("Total time taken : {0:n} s.", (DateTime.Now.Subtract(beforeCallingWebClient).TotalSeconds));
 
@@ -49,14 +60,14 @@ namespace PostalCodeClient
             tAllResults.Text += "(" + tProgress.Text + ")\r\n\r\n";
         }
 
-        private StreetData GetSingleAddress(string postalCode)
+        private StreetData GetSingleAddress(string postalCode, string endPointName)
         {
-            var wcfClient = new StreetLookupClient("BasicHttpBinding_IStreetLookup_Fast");
+            var wcfClient = new StreetLookupClient(endPointName);
             return wcfClient.GetStreet(postalCode);
         }
-        private async Task<StreetData> GetSingleAddressAsync(string postalCode)
+        private async Task<StreetData> GetSingleAddressAsync(string postalCode, string endPointName)
         {
-            var wcfClient = new StreetLookupClient("BasicHttpBinding_IStreetLookup_Fast");
+            var wcfClient = new StreetLookupClient(endPointName);
             var sd = await wcfClient.GetStreetAsync(postalCode);
             return sd;
         }
