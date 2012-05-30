@@ -15,7 +15,8 @@ namespace PostalCodeClient
 
         private async void bFindStreet_Click(object sender, EventArgs e)
         {
-            string[] postalCodeList = tSearchPostalCode.Text.Substring(1).Split(tSearchPostalCode.Text[0]);
+            string[] postalCodeList = tSearchPostalCode.Text.
+                Substring(1).Split(tSearchPostalCode.Text[0]);
 
             StreetData[] resultList;
             var beforeCallingWebClient = DateTime.Now;
@@ -102,6 +103,11 @@ namespace PostalCodeClient
         private void tTown_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void bClear_Click(object sender, EventArgs e)
+        {
+            tAllResults.Text = String.Empty;
         }
     }
 }

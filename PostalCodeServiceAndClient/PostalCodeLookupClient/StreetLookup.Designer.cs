@@ -182,6 +182,7 @@
             this.rWhenAll.Name = "rWhenAll";
             this.rWhenAll.Size = new System.Drawing.Size(95, 26);
             this.rWhenAll.TabIndex = 13;
+            this.rWhenAll.TabStop = true;
             this.rWhenAll.Text = "WhenAll";
             this.rWhenAll.UseVisualStyleBackColor = true;
             // 
@@ -242,6 +243,7 @@
             this.rFastService.Name = "rFastService";
             this.rFastService.Size = new System.Drawing.Size(63, 28);
             this.rFastService.TabIndex = 15;
+            this.rFastService.TabStop = true;
             this.rFastService.Text = "Fast";
             this.rFastService.UseVisualStyleBackColor = true;
             // 
@@ -255,6 +257,7 @@
             this.bClear.TabIndex = 17;
             this.bClear.Text = "Clear";
             this.bClear.UseVisualStyleBackColor = true;
+            this.bClear.Click += new System.EventHandler(this.bClear_Click);
             // 
             // StreetLookup
             // 
